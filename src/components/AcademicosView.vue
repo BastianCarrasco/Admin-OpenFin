@@ -16,23 +16,28 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios"; // Asegúrate de instalar axios: bun add axios
+import axios from "axios";
 
 const academicos = ref([]);
 const loading = ref(true);
 const error = ref(null);
 
+// Acceder a la variable de entorno definida en tu .env del frontend
+// Vite expone las variables que empiezan con VITE_ a través de import.meta.env
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 onMounted(async () => {
     try {
-        // Aquí es donde necesitarías un backend para conectar con MongoDB
-        // Por ejemplo, una API en Node.js/Express que exponga tus datos
-        const response = await axios.get(
-            "http://localhost:3000/api/academicosinscripciones"
-        ); // Ejemplo de endpoint
+        // Construye la URL completa usando la variable de entorno
+        // Asegúrate de que API_BASE_URL no termine en "/" y el path no empiece con "/" extra,
+        // o maneja las barras en la concatenación.
+        // En tu caso: VITE_API_BASE_URL = "https://bun-mongo-production.up.railway.app/api"
+        // Y el path de tu ruta es "/academicos/inscripciones"
+        const response = await axios.get(`${API_BASE_URL}/academicos/inscripciones`);
         academicos.value = response.data;
     } catch (err) {
         console.error("Error al cargar académicos:", err);
-        error.value = "Error al cargar los datos de académicos.";
+        error.value = `Error al cargar los datos de académicos. Asegúrate de que el backend esté funcionando correctamente y que la URL (${API_BASE_URL}/academicos/inscripciones) sea accesible.`;
     } finally {
         loading.value = false;
     }
