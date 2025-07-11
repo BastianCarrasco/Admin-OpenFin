@@ -55,14 +55,14 @@
                     <strong>Correo Electrónico:</strong>
                     <a :href="'mailto:' + empresa.correoElectronico">{{
                         empresa.correoElectronico
-                        }}</a>
+                    }}</a>
                 </p>
                 <p><strong>Número de Teléfono:</strong> {{ empresa.numeroTelefono }}</p>
                 <p>
                     <strong>Contacto Web:</strong>
                     <a :href="empresa.contactoWeb" target="_blank" rel="noopener noreferrer">{{
                         empresa.contactoWeb
-                        }}</a>
+                    }}</a>
                 </p>
 
                 <div v-if="empresa.vinculoPUCV && empresa.vinculoPUCV.length">
@@ -296,7 +296,7 @@ p {
 
 .reset-button {
     padding: 10px 20px;
-    background-color: #f44336;
+    background-color: #384693;
     /* Rojo */
     color: white;
     border: none;

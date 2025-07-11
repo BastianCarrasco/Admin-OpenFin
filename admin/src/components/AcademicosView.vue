@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="filters-section">
-            <h2>Filtros</h2>
+            <!-- <h2>Filtros</h2> -->
             <div class="filter-controls">
                 <div class="filter-group">
                     <label for="search">Buscar por Nombre:</label>
@@ -259,7 +259,7 @@ p {
 
 .reset-button {
     padding: 10px 20px;
-    background-color: #f44336;
+    background-color: #384693;
     /* Rojo */
     color: white;
     border: none;
