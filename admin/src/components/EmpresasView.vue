@@ -1,8 +1,6 @@
 <template>
     <div>
-
         <div class="filters-section">
-
             <div class="filter-controls">
                 <div class="filter-group">
                     <label for="search">Buscar por Nombre/Empresa:</label>
@@ -20,6 +18,7 @@
                     </select>
                 </div>
 
+                <!-- Descomentar y ajustar si decides reincorporar este filtro -->
                 <!-- <div class="filter-group">
                     <label for="vinculoPUCV">Vínculo con PUCV:</label>
                     <select id="vinculoPUCV" v-model="filterVinculoPUCV" multiple @change="applyFilters">
@@ -38,7 +37,9 @@
                     </select>
                 </div>
 
-                <button @click="resetFilters" class="reset-button">Limpiar Filtros</button>
+                <button @click="resetFilters" class="reset-button">
+                    Limpiar Filtros
+                </button>
             </div>
         </div>
 
@@ -47,60 +48,21 @@
         </div>
 
         <div v-else-if="filteredEmpresas.length" class="empresas-grid">
-            <div v-for="empresa in filteredEmpresas" :key="empresa._id" class="empresa-card">
+            <div v-for="empresa in filteredEmpresas" :key="empresa._id" class="empresa-card"
+                @click="openModal(empresa)">
                 <h3>{{ empresa.nombre }} {{ empresa.apellido }}</h3>
-                <p><strong>Empresa/Organización:</strong> {{ empresa.empresaOrganizacion }}</p>
-                <p><strong>Área de Trabajo:</strong> {{ empresa.areaTrabajo }}</p>
                 <p>
-                    <strong>Correo Electrónico:</strong>
-                    <a :href="'mailto:' + empresa.correoElectronico">{{
-                        empresa.correoElectronico
-                    }}</a>
+                    <strong>Empresa/Organización:</strong>
+                    {{ empresa.empresaOrganizacion }}
                 </p>
-                <p><strong>Número de Teléfono:</strong> {{ empresa.numeroTelefono }}</p>
-                <p>
-                    <strong>Contacto Web:</strong>
-                    <a :href="empresa.contactoWeb" target="_blank" rel="noopener noreferrer">{{
-                        empresa.contactoWeb
-                    }}</a>
-                </p>
-
                 <div v-if="empresa.vinculoPUCV && empresa.vinculoPUCV.length">
-                    <p><strong>Vínculo con PUCV:</strong> {{ empresa.vinculoPUCV.join(", ") }}</p>
-                </div>
-
-                <p v-if="empresa.actividadesServicios">
-                    <strong>Actividades/Servicios:</strong> {{ empresa.actividadesServicios }}
-                </p>
-
-                <div v-if="empresa.desafio1 || empresa.desafio2 || empresa.desafio3" class="desafios-section">
-                    <h4>Desafíos Principales:</h4>
-                    <ul>
-                        <li v-if="empresa.desafio1">{{ empresa.desafio1 }}</li>
-                        <li v-if="empresa.desafio2">{{ empresa.desafio2 }}</li>
-                        <li v-if="empresa.desafio3">{{ empresa.desafio3 }}</li>
-                    </ul>
-                </div>
-
-                <p v-if="empresa.interesInformacion">
-                    <strong>Interesado en más información:</strong>
-                    {{ empresa.interesInformacion === "si" ? "Sí" : "No" }}
-                </p>
-
-                <div class="timestamp-section">
                     <p>
-                        <small>
-                            <strong>Fecha de Registro:</strong>
-                            {{ new Date(empresa.createdAt).toLocaleDateString() }}
-                        </small>
-                    </p>
-                    <p v-if="empresa.updatedAt">
-                        <small>
-                            <strong>Última Actualización:</strong>
-                            {{ new Date(empresa.updatedAt).toLocaleDateString() }}
-                        </small>
+                        <strong>Vínculo con PUCV:</strong>
+                        {{ empresa.vinculoPUCV.join(", ") }}
                     </p>
                 </div>
+                <!-- Aquí puedes añadir un indicador de clic o más info si lo deseas -->
+                <p class="click-info">Haz clic para más detalles</p>
             </div>
         </div>
 
@@ -108,12 +70,16 @@
             No hay empresas registradas que coincidan con los filtros aplicados.
         </p>
         <p v-if="error" class="error-message">{{ error }}</p>
+
+        <!-- Componente Modal -->
+        <EmpresaDetailModal :show="showModal" :empresa="selectedEmpresa" @close="closeModal" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
+import EmpresaDetailModal from "./Modal/EmpresaDetailModal.vue"; // Importa el nuevo componente modal
 
 const empresas = ref([]); // Todos los datos cargados desde la API
 const filteredEmpresas = ref([]); // La lista que se muestra, basada en los filtros
@@ -126,11 +92,17 @@ const filterAreaTrabajo = ref("");
 const filterVinculoPUCV = ref([]); // Array para selección múltiple
 const filterInteresInfo = ref("");
 
+// Estados para el Modal
+const showModal = ref(false);
+const selectedEmpresa = ref(null);
+
 const API_URL_EMPRESAS = import.meta.env.VITE_API_URL_EMPRESAS;
 
 // Propiedades computadas para obtener opciones únicas para los selects
 const uniqueAreasTrabajo = computed(() => {
-    const areas = new Set(empresas.value.map((emp) => emp.areaTrabajo).filter(Boolean));
+    const areas = new Set(
+        empresas.value.map((emp) => emp.areaTrabajo).filter(Boolean),
+    );
     return Array.from(areas).sort();
 });
 
@@ -144,6 +116,18 @@ const uniqueVinculosPUCV = computed(() => {
     return Array.from(vinculos).sort();
 });
 
+// Función para abrir el modal
+const openModal = (empresa) => {
+    selectedEmpresa.value = empresa;
+    showModal.value = true;
+};
+
+// Función para cerrar el modal
+const closeModal = () => {
+    showModal.value = false;
+    selectedEmpresa.value = null; // Limpiar la empresa seleccionada
+};
+
 // Función para aplicar filtros
 const applyFilters = () => {
     let tempEmpresas = empresas.value;
@@ -153,9 +137,11 @@ const applyFilters = () => {
         const searchLower = searchTerm.value.toLowerCase();
         tempEmpresas = tempEmpresas.filter(
             (emp) =>
-                emp.nombre.toLowerCase().includes(searchLower) ||
-                emp.apellido.toLowerCase().includes(searchLower) ||
-                emp.empresaOrganizacion.toLowerCase().includes(searchLower),
+                (emp.nombre && emp.nombre.toLowerCase().includes(searchLower)) ||
+                (emp.apellido &&
+                    emp.apellido.toLowerCase().includes(searchLower)) ||
+                (emp.empresaOrganizacion &&
+                    emp.empresaOrganizacion.toLowerCase().includes(searchLower)),
         );
     }
 
@@ -170,7 +156,9 @@ const applyFilters = () => {
     if (filterVinculoPUCV.value.length > 0) {
         tempEmpresas = tempEmpresas.filter((emp) =>
             emp.vinculoPUCV
-                ? filterVinculoPUCV.value.some((fv) => emp.vinculoPUCV.includes(fv))
+                ? filterVinculoPUCV.value.some((fv) =>
+                    emp.vinculoPUCV.includes(fv),
+                )
                 : false,
         );
     }
@@ -313,7 +301,7 @@ p {
     background-color: #d32f2f;
 }
 
-/* Grid para tarjetas (EXISTENTE) */
+/* Grid para tarjetas */
 .empresas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -321,7 +309,7 @@ p {
     padding: 20px;
 }
 
-/* Estilo de la tarjeta individual (EXISTENTE) */
+/* Estilo de la tarjeta individual */
 .empresa-card {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
@@ -333,10 +321,13 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+    /* Añade cursor de puntero para indicar que es clickeable */
 }
 
 .empresa-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .empresa-card h3 {
@@ -361,48 +352,11 @@ p {
     margin-right: 5px;
 }
 
-.empresa-card a {
-    color: #42b983;
-    text-decoration: none;
-}
-
-.empresa-card a:hover {
-    text-decoration: underline;
-}
-
-.desafios-section {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px dashed #e0e0e0;
-}
-
-.desafios-section h4 {
-    color: #34495e;
-    margin-bottom: 8px;
-    font-size: 1.2em;
-}
-
-.desafios-section ul {
-    list-style-type: disc;
-    padding-left: 25px;
-    margin-top: 0;
-}
-
-.desafios-section li {
-    margin-bottom: 5px;
-    color: #666;
-}
-
-.timestamp-section {
-    margin-top: auto;
-    padding-top: 10px;
-    border-top: 1px dashed #e0e0e0;
+.click-info {
     font-size: 0.85em;
-    color: #888;
-}
-
-.timestamp-section p {
-    margin-bottom: 0;
-    text-align: left;
+    color: #42b983;
+    text-align: center;
+    margin-top: 15px;
+    font-style: italic;
 }
 </style>
