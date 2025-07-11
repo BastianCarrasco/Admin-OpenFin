@@ -1,63 +1,122 @@
 <template>
     <nav class="navbar">
-        <div class="navbar-brand">Admin OPEN-FIN</div>
-        <ul class="navbar-links">
-            <li>
-                <router-link to="/empresas" class="nav-link">Empresas</router-link>
-            </li>
-            <li>
-                <router-link to="/academicos" class="nav-link">Académicos</router-link>
-            </li>
-            <li>
-                <router-link to="/concurso" class="nav-link">Concurso</router-link>
-            </li>
-        </ul>
+        <div class="navbar-left">
+            <!-- Asumiendo que el logo PUCV.png es el principal, y eliminando los comentarios de los otros paths -->
+            <img src="../icons/PUCV.png" alt="Logo PUCV" class="logo-pucv-navbar" />
+            <h1 class="navbar-title">Admin OPENFIN</h1>
+        </div>
+
+        <div class="navbar-right">
+
+
+            <router-link to="/empresas" class="nav-button">
+                <font-awesome-icon :icon="['fas', 'building']" />
+                Empresas
+            </router-link>
+
+            <router-link to="/academicos" class="nav-button">
+                <font-awesome-icon :icon="['fas', 'book-open']" />
+                Académicos/as
+            </router-link>
+            <!-- Si el enlace de concurso es necesario, descomenta y ajusta el icono si lo añadiste a la librería -->
+            <!-- <router-link to="/concurso" class="nav-button">
+        <font-awesome-icon :icon="['fas', 'trophy']" />
+        Concurso
+      </router-link> -->
+        </div>
     </nav>
 </template>
+
+<script setup>
+// No se necesita lógica JS compleja para este navbar estático.
+</script>
 
 <style scoped>
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #2e5c8a;
+    /* Color de fondo azul */
+    padding: 0.8rem 2rem;
+    /* El borde inferior #e0e0e0 puede contrastar con el fondo azul,
+     considera quitarlo o cambiar su color si no te gusta el efecto */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    /* Borde más sutil */
+    height: 80px;
 }
 
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.navbar-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.navbar-left {
     display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Espacio entre el logo y el título */
 }
 
-.navbar-links li {
-    margin-left: 1.5rem;
+/* Estilo para la imagen del logo PUCV dentro de la navbar */
+.navbar-left .logo-pucv-navbar {
+    height: 50px;
+    /* Ajusta el tamaño del logo según tu imagen */
+    object-fit: contain;
 }
 
-.nav-link {
+/* Estilos para el título H1 */
+.navbar-left .navbar-title {
     color: white;
+    /* Color de texto blanco */
+    font-size: 1.8rem;
+    /* Ajusta el tamaño de la fuente si es necesario */
+    font-weight: 700;
+    /* Hace el texto más grueso (bold) */
+    margin: 0;
+    /* Elimina el margen por defecto del h1 */
+    font-family: "Lato", sans-serif;
+    /* Asegura que la fuente Lato se use si está cargada */
+    /* Si 'Lato' no está cargada globalmente en tu proyecto (por ejemplo, en main.css o index.html),
+     no tendrá efecto. Asegúrate de importarla si quieres usarla. */
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    /* Texto de los botones más oscuro */
     text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.nav-link:hover {
-    color: #42b983;
-    /* Un color de acento de Vue */
+.nav-button:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
 }
 
-/* Estilo para el enlace activo */
-.router-link-active {
-    font-weight: bold;
-    color: #42b983;
-    /* Un color de acento para el enlace activo */
+.nav-button.router-link-active {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+}
+
+.nav-button.dropdown {
+    position: relative;
+}
+
+.nav-button .dropdown-icon {
+    margin-left: 5px;
+    font-size: 0.8em;
 }
 </style>
