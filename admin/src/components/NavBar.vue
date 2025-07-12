@@ -1,14 +1,11 @@
 <template>
     <nav class="navbar">
         <div class="navbar-left">
-            <!-- Asumiendo que el logo PUCV.png es el principal, y eliminando los comentarios de los otros paths -->
             <img src="../icons/PUCV.png" alt="Logo PUCV" class="logo-pucv-navbar" />
             <h1 class="navbar-title">Admin OPENFIN</h1>
         </div>
 
         <div class="navbar-right">
-
-
             <router-link to="/empresas" class="nav-button">
                 <font-awesome-icon :icon="['fas', 'building']" />
                 Empresas
@@ -18,11 +15,12 @@
                 <font-awesome-icon :icon="['fas', 'book-open']" />
                 Académicos/as
             </router-link>
-            <!-- Si el enlace de concurso es necesario, descomenta y ajusta el icono si lo añadiste a la librería -->
-            <!-- <router-link to="/concurso" class="nav-button">
-        <font-awesome-icon :icon="['fas', 'trophy']" />
-        Concurso
-      </router-link> -->
+
+            <!-- Concurso agregado aquí -->
+            <router-link to="/concurso" class="nav-button">
+                <font-awesome-icon :icon="['fas', 'trophy']" />
+                Concurso
+            </router-link>
         </div>
     </nav>
 </template>
@@ -39,8 +37,6 @@
     background-color: #2e5c8a;
     /* Color de fondo azul */
     padding: 0.8rem 2rem;
-    /* El borde inferior #e0e0e0 puede contrastar con el fondo azul,
-     considera quitarlo o cambiar su color si no te gusta el efecto */
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     /* Borde más sutil */
     height: 80px;
@@ -72,8 +68,6 @@
     /* Elimina el margen por defecto del h1 */
     font-family: "Lato", sans-serif;
     /* Asegura que la fuente Lato se use si está cargada */
-    /* Si 'Lato' no está cargada globalmente en tu proyecto (por ejemplo, en main.css o index.html),
-     no tendrá efecto. Asegúrate de importarla si quieres usarla. */
 }
 
 .navbar-right {
