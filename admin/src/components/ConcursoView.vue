@@ -45,21 +45,34 @@
                     <strong>Correo Electrónico:</strong>
                     <a :href="'mailto:' + desafio.correoElectronico">{{
                         desafio.correoElectronico
-                    }}</a>
+                        }}</a>
                 </p>
                 <p>
                     <strong>Unidad Académica:</strong>
                     {{ desafio.unidadAcademica }}
                     <span v-if="desafio.otraUnidad && desafio.unidadAcademica === 'Otra...'">({{ desafio.otraUnidad
-                    }})</span>
+                        }})</span>
                 </p>
+
+                <!-- INICIO DEL CAMBIO: Mostrar como lista con viñetas -->
                 <p>
-                    <strong>Desafío de Interés:</strong> {{ desafio.desafioInteres }}
+                    <strong>Desafío de Interés:</strong>
+                <ul v-if="Array.isArray(desafio.desafioInteres)">
+                    <li v-for="(item, index) in desafio.desafioInteres" :key="index">
+                        {{ item }}
+                    </li>
+                </ul>
+                <span v-else>
+                    {{ desafio.desafioInteres }}
+                </span>
                 </p>
-                <p>
+                <!-- FIN DEL CAMBIO -->
+
+                <!-- Puedes descomentar esto si decides mostrarlo -->
+                <!-- <p>
                     <strong>Capacidades para el Desafío:</strong>
                     {{ desafio.capacidadesDesafio }}
-                </p>
+                </p> -->
 
                 <div class="timestamp-section">
                     <p>
@@ -87,9 +100,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue"; // Importa onUnmounted
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import axios from "axios";
-import '../assets/concurso.css'
+import "../assets/concurso.css";
 
 const desafios = ref([]); // Todos los datos cargados desde la API
 const filteredDesafios = ref([]); // La lista que se muestra, basada en los filtros
@@ -109,19 +122,25 @@ const uniqueUnidadesAcademicas = computed(() => {
     const unidades = new Set(
         desafios.value.map((desafio) => desafio.unidadAcademica).filter(Boolean),
     );
-    // También agregar la "Otra..." si existe en los datos originales y es una opción válida
     desafios.value.forEach((desafio) => {
         if (desafio.unidadAcademica === "Otra..." && desafio.otraUnidad) {
-            unidades.add("Otra..."); // Asegurarse de que "Otra..." esté como una opción seleccionable
+            unidades.add("Otra...");
         }
     });
     return Array.from(unidades).sort();
 });
 
 const uniqueDesafiosInteres = computed(() => {
-    const intereses = new Set(
-        desafios.value.map((desafio) => desafio.desafioInteres).filter(Boolean),
-    );
+    const intereses = new Set();
+    desafios.value.forEach((desafio) => {
+        if (desafio.desafioInteres) {
+            if (Array.isArray(desafio.desafioInteres)) {
+                desafio.desafioInteres.forEach((item) => intereses.add(item));
+            } else {
+                intereses.add(desafio.desafioInteres);
+            }
+        }
+    });
     return Array.from(intereses).sort();
 });
 
@@ -148,9 +167,14 @@ const applyFilters = () => {
 
     // 3. Filtro por Desafío de Interés
     if (filterDesafioInteres.value) {
-        tempDesafios = tempDesafios.filter(
-            (desafio) => desafio.desafioInteres === filterDesafiosInteres.value,
-        );
+        const filterValue = filterDesafiosInteres.value;
+        tempDesafios = tempDesafios.filter((desafio) => {
+            if (Array.isArray(desafio.desafioInteres)) {
+                return desafio.desafioInteres.includes(filterValue);
+            } else {
+                return desafio.desafioInteres === filterValue;
+            }
+        });
     }
 
     filteredDesafios.value = tempDesafios;
@@ -162,13 +186,7 @@ const fetchDataAndCompare = async () => {
         const response = await axios.get(API_URL_DESAFIO);
         const newData = response.data.data;
 
-        // Clonar los datos actuales para evitar mutaciones directas y hacer una comparación limpia
-        const currentData = JSON.parse(JSON.stringify(desafios.value));
-
-        // Comparar los arrays. Una forma simple es serializarlos a JSON.
-        // Si los arrays son grandes y el orden importa, esta es una buena forma.
-        // Si el orden no importa, podrías necesitar una lógica de comparación más compleja.
-        if (JSON.stringify(currentData) !== JSON.stringify(newData)) {
+        if (JSON.stringify(desafios.value) !== JSON.stringify(newData)) {
             console.log("¡Datos actualizados detectados! Refrescando la lista.");
             desafios.value = newData; // Actualiza los datos principales con los nuevos
             applyFilters(); // Re-aplica los filtros para que el nuevo elemento se vea afectado
@@ -178,9 +196,6 @@ const fetchDataAndCompare = async () => {
         console.error("Error al sondear la API para actualizar datos:", err);
         error.value = `Error al actualizar los datos de inscripciones a desafíos. Asegúrate de que el backend esté funcionando correctamente y que la URL (${API_URL_DESAFIO}) sea accesible. Detalles: ${err.message}`;
     } finally {
-        // Si 'loading' solo es para la carga inicial, se podría quitar de aquí
-        // o usar otra variable para indicar que el polling está en curso.
-        // Para la carga inicial, nos aseguramos de que se apague.
         if (loading.value) {
             loading.value = false;
         }
@@ -210,3 +225,24 @@ onUnmounted(() => {
     }
 });
 </script>
+
+<style scoped>
+/* Puedes añadir o ajustar estilos aquí para personalizar la apariencia de la lista */
+.desafio-card ul {
+    list-style-type: disc;
+    /* Muestra un disco como viñeta. Puedes usar 'circle', 'square', 'none', etc. */
+    margin-left: 20px;
+    /* Indenta la lista para que se vea mejor */
+    padding-left: 0;
+    /* Asegura que no haya padding extra del navegador */
+    margin-top: 5px;
+    /* Pequeño espacio sobre la lista */
+    margin-bottom: 5px;
+    /* Pequeño espacio debajo de la lista */
+}
+
+.desafio-card ul li {
+    margin-bottom: 3px;
+    /* Espacio entre cada elemento de la lista */
+}
+</style>
