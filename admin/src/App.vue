@@ -66,7 +66,7 @@ body {
   Estilos para el contenedor principal del contenido:
   - Ajusta el padding superior para evitar que el contenido quede debajo
     del NavBar.
-  - Un padding general para los lados es buena práctica.
+  - Un padding general para los lados es buena práctica.dwd
 */
 .content {
   flex-grow: 1;
