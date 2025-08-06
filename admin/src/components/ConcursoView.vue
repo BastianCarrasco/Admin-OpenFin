@@ -31,6 +31,10 @@
                 <button @click="resetFilters" class="reset-button">
                     Limpiar Filtros
                 </button>
+                <!-- NUEVO BOTÓN PARA EXPORTAR A EXCEL -->
+                <button @click="exportToExcel" class="export-excel-button" :disabled="!filteredDesafios.length">
+                    Exportar a Excel
+                </button>
             </div>
         </div>
 
@@ -45,13 +49,15 @@
                     <strong>Correo Electrónico:</strong>
                     <a :href="'mailto:' + desafio.correoElectronico">{{
                         desafio.correoElectronico
-                        }}</a>
+                    }}</a>
                 </p>
                 <p>
                     <strong>Unidad Académica:</strong>
                     {{ desafio.unidadAcademica }}
-                    <span v-if="desafio.otraUnidad && desafio.unidadAcademica === 'Otra...'">({{ desafio.otraUnidad
-                        }})</span>
+                    <span v-if="
+                        desafio.otraUnidad &&
+                        desafio.unidadAcademica === 'Otra...'
+                    ">({{ desafio.otraUnidad }})</span>
                 </p>
 
                 <!-- INICIO DEL CAMBIO: Mostrar como lista con viñetas -->
@@ -102,6 +108,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import axios from "axios";
+import * as XLSX from "xlsx"; // Importa la librería XLSX
 import "../assets/concurso.css";
 
 const desafios = ref([]); // Todos los datos cargados desde la API
@@ -167,10 +174,10 @@ const applyFilters = () => {
 
     // 3. Filtro por Desafío de Interés
     if (filterDesafioInteres.value) {
-        const filterValue = filterDesafiosInteres.value;
+        const filterValue = filterDesafioInteres.value; // Corregido: Usar filterDesafioInteres
         tempDesafios = tempDesafios.filter((desafio) => {
             if (Array.isArray(desafio.desafioInteres)) {
-                return desafio.desafioInteres.includes(filterValue);
+                return desafio.desafiosInteres.includes(filterValue); // Corregido: usar desafiosInteres
             } else {
                 return desafio.desafioInteres === filterValue;
             }
@@ -210,6 +217,44 @@ const resetFilters = () => {
     applyFilters(); // Vuelve a aplicar los filtros para mostrar todo
 };
 
+// ** NUEVA FUNCIÓN PARA EXPORTAR A EXCEL **
+const exportToExcel = () => {
+    if (!filteredDesafios.value.length) {
+        alert("No hay datos para exportar.");
+        return;
+    }
+
+    // Mapea los datos a un formato más amigable para Excel
+    const dataToExport = filteredDesafios.value.map((desafio) => {
+        return {
+            Nombre: desafio.nombre,
+            Apellido: desafio.apellido,
+            "Correo Electrónico": desafio.correoElectronico,
+            "Unidad Académica":
+                desafio.unidadAcademica === "Otra..." && desafio.otraUnidad
+                    ? `${desafio.unidadAcademica} (${desafio.otraUnidad})`
+                    : desafio.unidadAcademica,
+            "Desafío de Interés": Array.isArray(desafio.desafioInteres)
+                ? desafio.desafioInteres.join(", ")
+                : desafio.desafioInteres,
+            // Si quieres incluir capacidades:
+            // "Capacidades para el Desafío": desafio.capacidadesDesafio,
+            "Fecha de Inscripción": new Date(desafio.createdAt).toLocaleDateString(),
+            "Última Actualización": desafio.updatedAt
+                ? new Date(desafio.updatedAt).toLocaleDateString()
+                : "N/A",
+        };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Inscripciones a Desafios");
+
+    // Genera el archivo Excel
+    XLSX.writeFile(workbook, "inscripciones_desafios.xlsx");
+};
+// ** FIN DE LA NUEVA FUNCIÓN **
+
 onMounted(async () => {
     loading.value = true; // Indicar que la carga inicial está en progreso
     await fetchDataAndCompare(); // Realiza la carga inicial inmediatamente
@@ -244,5 +289,30 @@ onUnmounted(() => {
 .desafio-card ul li {
     margin-bottom: 3px;
     /* Espacio entre cada elemento de la lista */
+}
+
+/* Estilos para el nuevo botón de exportar */
+.export-excel-button {
+    background-color: #28a745;
+    /* Color verde */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    /* Espacio para separarlo de otros botones/filtros */
+    transition: background-color 0.3s ease;
+}
+
+.export-excel-button:hover {
+    background-color: #218838;
+    /* Verde más oscuro al pasar el mouse */
+}
+
+.export-excel-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 </style>
