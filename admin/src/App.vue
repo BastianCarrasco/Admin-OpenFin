@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar.vue";
 <template>
   <div id="app">
     <NavBar />
-    <main class="content">
+    <main>
       <router-view></router-view>
     </main>
   </div>
@@ -35,7 +35,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f8f9fa;
   /* Un color de fondo suave para toda la app */
-  color: #333;
+  color: #000000;
   /* Un color de texto base para toda la app, más oscuro que negro puro */
   overflow-x: hidden;
   /* Evita el scroll horizontal causado por elementos que desbordan */
@@ -71,8 +71,7 @@ body {
 .content {
   flex-grow: 1;
   /* Permite que el contenido ocupe el espacio restante */
-  padding: 20px;
-  /* Padding general para el contenido */
+
 
   /* El padding-top debe compensar la altura del navbar (80px).
      Dado que el menú móvil se superpone (position: absolute),

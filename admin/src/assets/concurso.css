@@ -1,169 +1,559 @@
-/* Estilos generales (Mantienen la mayoría de los estilos existentes) */
-h1 {
-  text-align: center;
-  color: #34495e;
-  margin-bottom: 20px;
+/* Tus estilos CSS existentes, asegúrate de que estén aquí */
+.concurso-view {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  display: flex;
+  flex-direction: column;
 }
 
-p {
-  text-align: center;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* Mensajes de estado */
 .loading-message,
 .no-data-message,
 .error-message {
-  padding: 20px;
-  font-size: 1.1em;
-  color: #555;
   text-align: center;
+  padding: 25px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 800px;
+  font-size: 1.1em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.loading-message {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.no-data-message {
+  background-color: #fff3e0;
+  color: #ef6c00;
+  border: 1px solid #ffcc80;
 }
 
 .error-message {
-  color: red;
-  font-weight: bold;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
 }
 
-/* Sección de Filtros */
-.filters-section {
-  background-color: #f8f8f8;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 25px;
-  margin: 20px auto;
-  max-width: 1200px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.filters-section h2 {
-  text-align: center;
-  color: #34495e;
-  margin-top: 0;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #42b983;
-  padding-bottom: 10px;
-}
-
-.filter-controls {
+.main-content-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  align-items: flex-end;
+  grid-template-columns: 280px 1fr;
+  gap: 25px;
+  padding: 25px;
+  flex-grow: 1;
+  max-width: 100%;
 }
 
-.filter-group {
+@media (max-width: 900px) {
+  .main-content-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .empresas-list {
+    max-height: 400px;
+  }
+}
+
+.empresas-list {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-.filter-group label {
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #333;
+.list-title {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-size: 1.4em;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 15px;
+  font-weight: 600;
 }
 
-.filter-group input[type="text"],
-.filter-group select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empresa-list-button {
+  background-color: #f7f7f7;
+  color: #34495e;
+  border: 1px solid #e0e0e0;
+  padding: 12px 18px;
+  border-radius: 10px;
+  text-align: left;
   font-size: 1em;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.filter-group select[multiple] {
-  min-height: 80px;
-  resize: vertical;
-}
-
-.reset-button {
-  padding: 10px 20px;
-  background-color: #384693;
-  /* Azul */
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  align-self: flex-end;
+  transition: all 0.25s ease;
+  width: 100%;
+  font-weight: 500;
 }
 
-.reset-button:hover {
-  background-color: #2c3e50;
-  /* Un tono más oscuro de azul o similar */
+.empresa-list-button:hover {
+  background-color: #eaf1f8;
+  color: #007bff;
+  border-color: #a7d3ff;
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
 }
 
-/* Grid para tarjetas */
-.desafios-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 25px;
+.empresa-list-button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  transform: none;
+}
+
+.empresa-list-button.active:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.empresa-detail-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.empresa-detail-card {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.no-selection-message {
+  color: #6c757d;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #ced4da;
   padding: 20px;
 }
 
-/* Estilo de la tarjeta individual */
-.desafio-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  text-align: left;
-  background-color: #ffffff;
-  transition: transform 0.2s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* --- NUEVOS ESTILOS CMF --- */
+
+.cmf-challenge-header {
+  background-color: #2b70f0;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  display: inline-block;
+  /* Para que ocupe solo el ancho del contenido */
+  font-size: 1.2em;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.desafio-card:hover {
-  transform: translateY(-5px);
+.cmf-challenge-header h1 {
+  margin: 0;
+  font-size: 1.2em;
+  /* Ajusta el tamaño para que se vea como en la imagen */
+  color: white;
 }
 
-.desafio-card h3 {
-  color: #34495e;
-  margin-top: 0;
+.cmf-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: #2b70f0;
+  /* Color azul del título "Contexto" y "Reporte..." */
+  font-size: 1.8em;
+  /* Tamaño de fuente más grande */
+  font-weight: 700;
   margin-bottom: 15px;
-  font-size: 1.6em;
-  border-bottom: 2px solid #42b983;
-  padding-bottom: 5px;
 }
 
-.desafio-card p {
-  margin-bottom: 8px;
+.cmf-context-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+  padding-left: 5px;
+  /* Pequeño indentado para el texto */
+}
+
+.cmf-report-list {
+  list-style: none;
+  /* Eliminar los puntos por defecto */
+  padding: 0;
+  margin: 0;
+  counter-reset: report-item-counter;
+  /* Iniciar un contador */
+}
+
+.cmf-report-list li {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 10px;
+  padding-left: 25px;
+  /* Espacio para el número */
+  position: relative;
+}
+
+.cmf-report-list li::before {
+  counter-increment: report-item-counter;
+  content: counter(report-item-counter) ". ";
+  font-weight: bold;
+  color: #2b70f0;
+  /* Color de los números */
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.cmf-challenges-section {
+  margin-top: 40px;
+}
+
+.section-title-blue {
+  color: #2b70f0;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.cmf-main-challenge-description {
+  background-color: #f7faff;
+  /* Fondo ligeramente azulado */
+  border-left: 5px solid #2b70f0;
+  /* Barra lateral azul */
+  padding: 15px 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cmf-challenge-box {
+  background-color: #f0f8ff;
+  /* Fondo muy claro para los desafíos individuales */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #d4eeff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cmf-challenge-title {
+  color: #2b70f0;
+  /* Título azul oscuro */
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.cmf-challenge-objective {
+  font-size: 1em;
   line-height: 1.5;
   color: #555;
-  font-size: 0.95em;
-  text-align: left;
+  margin: 0;
 }
 
-.desafio-card p strong {
-  color: #2c3e50;
-  margin-right: 5px;
+/* --- FIN NUEVOS ESTILOS CMF --- */
+
+/* Nuevo contenedor para Contexto y Reporte uno al lado del otro */
+.cmf-context-report-container {
+  display: flex;
+  gap: 30px;
+  /* Espacio entre las dos columnas */
+  margin-bottom: 30px;
+  /* Mantener el margen inferior que solían tener las secciones */
+  flex-wrap: wrap;
+  /* Permitir que las columnas se apilen en pantallas pequeñas */
 }
 
-.desafio-card a {
-  color: #42b983;
-  text-decoration: none;
-}
-
-.desafio-card a:hover {
-  text-decoration: underline;
-}
-
-.timestamp-section {
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed #e0e0e0;
-  font-size: 0.85em;
-  color: #888;
-}
-
-.timestamp-section p {
+/* Ajustar los cmf-section dentro de este contenedor para que ocupen el ancho */
+.cmf-context-report-container .cmf-section {
+  flex: 1;
+  /* Hace que cada sección intente ocupar el mismo espacio disponible */
+  min-width: 300px;
+  /* Asegura que no se hagan demasiado pequeños antes de envolverse */
   margin-bottom: 0;
-  text-align: left;
+  /* Reiniciar el margen inferior de .cmf-section para que el gap lo maneje */
+}
+
+/* Media query para pantallas pequeñas: las secciones se apilan */
+@media (max-width: 768px) {
+  .cmf-context-report-container {
+    flex-direction: column;
+    /* Apilar las secciones */
+    gap: 20px;
+  }
+
+  .cmf-context-report-container .cmf-section {
+    min-width: auto;
+    /* Desactivar el min-width cuando se apilan */
+    width: 100%;
+  }
+}
+
+.debug-json {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #eff6fc;
+  border: 1px solid #d0e7f7;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.debug-json summary {
+  font-weight: bold;
+  color: #0056b3;
+  padding: 5px 0;
+  outline: none;
+  font-size: 1.1em;
+}
+
+.debug-json summary:hover {
+  color: #003f7f;
+}
+
+pre {
+  background-color: #e8f4f8;
+  border: 1px solid #c8e6f0;
+  padding: 15px;
+  margin-top: 15px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border-radius: 8px;
+  max-height: 300px;
+}
+
+code {
+  font-family: "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 0.8em;
+  color: #2f4f4f;
+}
+
+/* Estilos para los botones de acción */
+.action-buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: flex-end;
+}
+
+.action-button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.action-button i {
+  font-size: 1.1em;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+  border: 1px solid #28a745;
+}
+
+.save-button:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+  border: 1px solid #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.action-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Estilos para el formulario de edición */
+.edit-form {
+  padding: 20px;
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #34495e;
+  font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1em;
+  color: #495057;
+  box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.form-group textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  border-top: 1px dashed #e9ecef;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.3);
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.form-section-title {
+  color: #007bff;
+  font-size: 1.5em;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  font-weight: 600;
+}
+
+.challenge-edit-section {
+  background-color: #f8fafd;
+  border: 1px solid #eef3f7;
+  border-left: 5px solid #a7d3ff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.challenge-edit-section .challenge-edit-title {
+  color: #007bff;
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #cfe2ff;
+  padding-bottom: 10px;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.submit-form-button,
+.cancel-form-button {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.submit-form-button {
+  background-color: #28a745;
+  color: white;
+  border: 1px solid #28a745;
+}
+
+.submit-form-button:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.cancel-form-button {
+  background-color: #6c757d;
+  color: white;
+  border: 1px solid #6c757d;
+}
+
+.cancel-form-button:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.submit-form-button:disabled,
+.cancel-form-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }

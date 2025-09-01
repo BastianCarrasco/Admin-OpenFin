@@ -13,10 +13,10 @@
                     <font-awesome-icon :icon="['fas', 'building']" />
                     Empresas
                 </router-link>
-                <router-link to="/academicos" class="nav-button">
+                <!-- <router-link to="/academicos" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'book-open']" />
                     Académicos/as
-                </router-link>
+                </router-link> -->
                 <router-link to="/concurso" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'trophy']" />
                     Desafíos

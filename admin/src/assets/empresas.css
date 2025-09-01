@@ -1,0 +1,194 @@
+/*
+    Archivo: ../assets/empresas.css
+    Todos los estilos para el componente que muestra las empresas
+*/
+
+/* --- Estilos Generales de la Vista --- */
+.concurso-view {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.loading-message,
+.no-data-message,
+.error-message {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-size: 1.1em;
+  color: #333;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+/* --- Sección de Controles (Solo Ordenamiento) --- */
+.filters-section {
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: flex-end;
+  /* Alinea los controles a la derecha */
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* Espacio entre el control de ordenamiento y otros futuros elementos */
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.95em;
+}
+
+.filter-group select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 0.95em;
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  appearance: none;
+  /* Elimina estilos predeterminados del navegador */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%20197.3l-132.4-132.4c-4.7-4.7-12.3-4.7-17%200L5.4%20197.3c-4.7%204.7-4.7%2012.3%200%2017l7.1%207.1c4.7%204.7%2012.3%204.7%2017%200l105.4-105.4c4.7-4.7%2012.3-4.7%2017%200l105.4%20105.4c4.7%204.7%2012.3%204.7%2017%200l7.1-7.1c4.7-4.7%204.7-12.4%200-17z%22%2F%3E%3C%2Fsvg%3E");
+  /* Flecha de custom dropdown */
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 0.65em auto;
+}
+
+.filter-group select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- Grid de Empresas --- */
+.empresas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+  .empresas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Tarjeta de Empresa --- */
+.empresa-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.empresa-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: #007bff;
+}
+
+.card-header {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.card-title-and-image {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.card-company-image-container {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fdfdfd;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.card-company-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.card-external-link-icon {
+  font-size: 1.5em;
+  color: #007bff;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.4em;
+  color: #007bff;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.card-date {
+  color: #6c757d;
+  font-size: 0.85em;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.card-main-content p {
+  margin-bottom: 8px;
+  color: #495057;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.card-main-content strong {
+  color: #34495e;
+}
+
+.click-info {
+  text-align: center;
+  margin-top: 20px;
+  color: #999;
+  font-size: 0.85em;
+  font-style: italic;
+}

@@ -1,0 +1,165 @@
+/* (Los estilos para el modal permanecen sin cambios. Están bien en components/Modal/EditModal.vue como scoped styles) */
+/* Estilos específicos para el modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.8em;
+  color: #007bff;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  flex-grow: 1;
+  padding-right: 15px;
+}
+
+.form-section {
+  background-color: #f8f9fa;
+  border: 1px solid #e2e6ea;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.form-section h4 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #cce0ff;
+  font-size: 1.3em;
+}
+
+label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #34495e;
+  font-size: 0.95em;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+input[type="checkbox"] {
+  margin-left: 10px;
+  transform: scale(1.2);
+}
+
+.challenge-fields {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #e9f7ef;
+  border-left: 3px solid #28a745;
+  border-radius: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.save-button:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+}
