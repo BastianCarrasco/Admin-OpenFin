@@ -41,11 +41,11 @@
 
                 <!-- CONTENIDO PRINCIPAL DE LA TARJETA SIMPLIFICADO -->
                 <div class="card-main-content">
-                    <p v-if="empresa.front && empresa.front.contexto">
-                        <strong>Contexto:</strong> {{ truncateText(empresa.front.contexto, 100) }}
+                    <p v-if="empresa.actividadesServicios">
+                        <strong>Descripcion:</strong> {{ truncateText(empresa.actividadesServicios, 100) }}
                     </p>
-                    <p v-else-if="empresa.actividadesServicios">
-                        <strong>Actividades:</strong> {{ truncateText(empresa.actividadesServicios, 100) }}
+                    <p v-else-if="empresa.front && empresa.front.contexto">
+                        <strong>Contexto:</strong> {{ truncateText(empresa.front.contexto, 100) }}
                     </p>
                     <p v-else>
                         <em>No hay contexto ni actividades definidas.</em>
