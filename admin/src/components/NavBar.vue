@@ -11,7 +11,7 @@
             <div v-if="!isMobile" class="navbar-right-desktop">
                 <router-link to="/empresas" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'building']" />
-                    Empresas
+                    Información Empresas
                 </router-link>
                 <!-- <router-link to="/academicos" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'book-open']" />
@@ -19,7 +19,7 @@
                 </router-link> -->
                 <router-link to="/concurso" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'trophy']" />
-                    Desafíos
+                    Editar Desafíos
                 </router-link>
             </div>
         </div>

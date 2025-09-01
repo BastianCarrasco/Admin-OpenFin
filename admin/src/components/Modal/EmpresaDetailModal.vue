@@ -32,6 +32,10 @@
 
                 <div class="modal-body" v-if="empresa">
                     <p>
+                        <strong>Nombre:</strong>
+                        {{ [empresa.nombre, empresa.apellido].filter(Boolean).join(' ') || "Sin datos" }}
+                    </p>
+                    <p>
                         <strong>Empresa/Organización:</strong>
                         {{ empresa.empresaOrganizacion || "Sin datos" }}
                     </p>
@@ -48,7 +52,7 @@
                         <template v-if="empresa.correoElectronico">
                             <a :href="'mailto:' + empresa.correoElectronico">{{
                                 empresa.correoElectronico
-                                }}</a>
+                            }}</a>
                         </template>
                         <template v-else> Sin datos </template>
                     </p>
@@ -82,7 +86,7 @@
                     </p>
 
                     <!-- Sección Front -->
-                    <div class="front-section">
+                    <!-- <div class="front-section">
                         <h4>Información Adicional (Front):</h4>
                         <template v-if="empresa.front">
                             <p>
@@ -115,11 +119,11 @@
                             </p>
                         </template>
                         <p v-else>Sin datos para la sección Front.</p>
-                    </div>
+                    </div> -->
 
                     <!-- Desafíos Principales -->
                     <div class="desafios-section">
-                        <h4>Desafíos a Nivel Raíz:</h4>
+                        <h4>Desafíos para Ingeniería PUCV:</h4>
                         <ul>
                             <li>{{ empresa.desafio1 || "Sin datos" }}</li>
                             <li>{{ empresa.desafio2 || "Sin datos" }}</li>
@@ -128,7 +132,7 @@
                     </div>
 
                     <!-- Desafíos Detallados -->
-                    <div class="desafios-section">
+                    <!-- <div class="desafios-section">
                         <h4>Desafíos Detallados:</h4>
                         <template v-if="
                             empresa.front?.desafio_1?.titulo ||
@@ -161,7 +165,7 @@
                             </div>
                         </template>
                         <p v-else>Sin datos de desafíos detallados.</p>
-                    </div>
+                    </div> -->
 
                     <p>
                         <strong>Interesado en más información:</strong>
@@ -173,7 +177,7 @@
                                 : "Sin datos"
                         }}
                     </p>
-                    <p>
+                    <!-- <p>
                         <strong>Validado:</strong>
                         {{
                             typeof empresa.Validar === "boolean"
@@ -182,7 +186,7 @@
                                     : "No"
                                 : "Sin datos"
                         }}
-                    </p>
+                    </p> -->
 
                     <div class="timestamp-section">
                         <p>
@@ -276,13 +280,13 @@ const exportWord = (empresa) => {
             new Paragraph({
                 text: titulo || fallbackTitulo,
                 heading: "Heading3", // Subtítulo más pequeño
-                spacing: { after: 50 },
+                spacing: { after: 100 }, // Más espacio después del título del desafío
             })
         );
         children.push(
             new Paragraph({
                 text: descripcion || "Sin datos",
-                spacing: { after: 200 },
+                spacing: { after: 250 }, // Espacio después de la descripción del desafío
             })
         );
     };
@@ -293,7 +297,7 @@ const exportWord = (empresa) => {
             new Paragraph({
                 text,
                 heading: "Heading1", // Título grande
-                spacing: { after: 200 },
+                spacing: { before: 400, after: 250 }, // Más espacio antes y después de los títulos principales
             })
         );
     };
@@ -304,12 +308,12 @@ const exportWord = (empresa) => {
             new Paragraph({
                 text,
                 heading: "Heading2", // Subtítulo
-                spacing: { after: 100 },
+                spacing: { before: 200, after: 150 }, // Espacio antes y después de los subtítulos
             })
         );
     };
 
-    // Helper para párrafos normales
+    // Helper para párrafos normales (etiqueta en negrita, valor normal)
     const addParagraph = (label, value) => {
         children.push(
             new Paragraph({
@@ -317,25 +321,47 @@ const exportWord = (empresa) => {
                     new TextRun({ text: `${label}: `, bold: true }),
                     new TextRun({ text: value || "Sin datos" }),
                 ],
-                spacing: { after: 100 },
+                spacing: { after: 150 }, // Espacio después de cada párrafo de datos
+            })
+        );
+    };
+
+    // Helper para añadir un salto de línea (párrafo vacío, para espacio extra)
+    const addLineBreak = () => {
+        children.push(
+            new Paragraph({
+                text: "", // Párrafo vacío
+                spacing: { after: 100 }, // Espacio pequeño para simular un salto de línea extra
             })
         );
     };
 
     // Helper para listas
     const addList = (label, items) => {
-        children.push(new Paragraph({ text: `${label}:`, bold: true }));
+        children.push(
+            new Paragraph({
+                text: `${label}:`,
+                bold: true,
+                spacing: { after: 100 }, // Espacio después del título de la lista
+            })
+        );
         if (items && items.length) {
             items.forEach((item) => {
                 children.push(
                     new Paragraph({
                         text: item || "Sin datos",
-                        bullet: { level: 0 },
+                        bullet: { level: 0 }, // Cada ítem con viñeta
+                        spacing: { after: 80 }, // Espacio después de cada ítem de la lista
                     })
                 );
             });
         } else {
-            children.push(new Paragraph("Sin datos"));
+            children.push(
+                new Paragraph({
+                    text: "Sin datos",
+                    spacing: { after: 150 }, // Si no hay ítems, un párrafo con "Sin datos"
+                })
+            );
         }
     };
 
@@ -348,14 +374,20 @@ const exportWord = (empresa) => {
     addParagraph("Correo", empresa.correoElectronico);
     addParagraph("Teléfono", empresa.numeroTelefono);
     addParagraph("Contacto Web", empresa.contactoWeb);
+    // addLineBreak(); // No se recomienda usar addLineBreak() aquí si ya tienes spacing en addParagraph.
+    // Los spacing ya manejarán el espacio entre párrafos.
+
     addList("Área(s) de Trabajo", empresa.areaTrabajo);
+    // addLineBreak();
     addList("Vínculo con PUCV", empresa.vinculoPUCV);
+    // addLineBreak();
     addParagraph("Actividades/Servicios", empresa.actividadesServicios);
+
 
     // =========================
     // 📌 Desafíos Raíz
     // =========================
-    addTitle("Desafíos a Nivel Raíz");
+    addTitle("Desafíos para Ingeniería PUCV");
     addParagraph("Desafío 1", empresa.desafio1);
     addParagraph("Desafío 2", empresa.desafio2);
     addParagraph("Desafío 3", empresa.desafio3);
@@ -363,21 +395,8 @@ const exportWord = (empresa) => {
     // =========================
     // 📌 Sección Front
     // =========================
-    if (empresa.front) {
-        addTitle("Información Adicional (Front)");
 
-        addParagraph("Contexto", empresa.front.contexto);
-        addParagraph("Título Extra", empresa.front.extra?.titulo);
-        addList("Datos Relevantes", empresa.front.extra?.datos);
 
-        addParagraph("Texto de Desafío Front", empresa.front.desafio_Texto);
-
-        // Desafíos detallados
-        addSubtitle("Desafíos Detallados");
-        addChallenge(empresa.front.desafio_1?.titulo, empresa.front.desafio_1?.descripcion, "Desafío 1");
-        addChallenge(empresa.front.desafio_2?.titulo, empresa.front.desafio_2?.descripcion, "Desafío 2");
-        addChallenge(empresa.front.desafio_3?.titulo, empresa.front.desafio_3?.descripcion, "Desafío 3");
-    }
 
     // =========================
     // 📌 Otros datos
@@ -391,7 +410,7 @@ const exportWord = (empresa) => {
                 ? "No"
                 : "Sin datos"
     );
-    addParagraph(
+    addParagraph( // Descomentamos la línea de "Validado"
         "Validado",
         empresa.Validar === true ? "Sí" : empresa.Validar === false ? "No" : "Sin datos"
     );

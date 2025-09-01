@@ -58,6 +58,7 @@
 
                         <!-- CONTENEDOR FLEX PARA CONTEXTO Y REPORTE -->
                         <div class="cmf-context-report-container">
+
                             <div class="cmf-section" v-if="selectedEmpresa.front.contexto">
                                 <h2 class="section-title">Contexto</h2>
                                 <p class="cmf-context-text">{{ selectedEmpresa.front.contexto }}</p>
@@ -138,10 +139,7 @@
                                 <textarea id="actividadesServicios"
                                     v-model="editableEmpresaData.actividadesServicios"></textarea>
                             </div>
-                            <div class="form-group checkbox-group">
-                                <input type="checkbox" id="validar" v-model="editableEmpresaData.Validar" />
-                                <label for="validar">Validado para Concurso</label>
-                            </div>
+
                             <div class="form-group">
                                 <label for="link-logo">URL del Logo:</label>
                                 <input type="text" id="link-logo" v-model="editableEmpresaData.link" />
@@ -214,6 +212,17 @@
                                     <label for="desafio3_descripcion">Descripción:</label>
                                     <textarea id="desafio3_descripcion"
                                         v-model="editableEmpresaData.front.desafio_3.descripcion" rows="3"></textarea>
+                                </div>
+                                <div class="form-group validation-group">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="validar" v-model="editableEmpresaData.Validar" />
+                                        <label for="validar">¿Validado para Concurso?</label>
+                                    </div>
+                                    <span class="help-text">
+                                        Al marcar esta casilla, confirmas que la empresa cumple con todos los requisitos
+                                        para participar en el concurso. Los datos editados aparecerán en el OpenFin una
+                                        vez guardados los cambios.
+                                    </span>
                                 </div>
                             </div>
 
@@ -691,6 +700,115 @@ watch(selectedEmpresa, (newValue) => {
     margin-bottom: 0;
     /* Reiniciar el margen inferior de .cmf-section para que el gap lo maneje */
 }
+
+/* assets/concurso.css */
+
+/* ... tus estilos existentes ... */
+
+/* Estilos para el nuevo contenedor de validación */
+.form-group.validation-group {
+    margin-top: 25px;
+    /* Más espacio arriba para destacarlo */
+    margin-bottom: 25px;
+    padding: 18px;
+    /* Un poco más de padding */
+    background-color: #eaf6ff;
+    /* Un azul muy claro como fondo */
+    border: 1px solid #a8d9ff;
+    /* Borde azul suave */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor específico para el checkbox y su label para que estén en la misma línea */
+.form-group.validation-group .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Espacio entre el checkbox/label y el texto de ayuda */
+}
+
+/* Estilos para el input[type="checkbox"] dentro de .validation-group */
+.form-group.validation-group input[type="checkbox"] {
+    /* Ocultar el checkbox nativo */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Estilo del checkbox personalizado */
+    width: 22px;
+    /* Un poco más grande */
+    height: 22px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    /* Bordes un poco más redondeados */
+    background-color: #fff;
+    cursor: pointer;
+    margin-right: 12px;
+    position: relative;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0;
+    /* Asegura que el checkbox no se encoja */
+}
+
+.form-group.validation-group input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-group.validation-group input[type="checkbox"]:checked::before {
+    content: '\2713';
+    display: block;
+    color: #fff;
+    font-size: 16px;
+    /* Tick un poco más grande */
+    text-align: center;
+    line-height: 20px;
+    /* Ajuste para el nuevo tamaño */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.form-group.validation-group input[type="checkbox"]:hover {
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+    /* Sombra un poco más grande al hover */
+}
+
+/* Estilos para la etiqueta del checkbox dentro de .validation-group */
+.form-group.validation-group label {
+    font-weight: bold;
+    color: #0056b3;
+    /* Un azul más oscuro para la etiqueta */
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.1em;
+    /* Ligeramente más grande */
+}
+
+/* Nuevo estilo para el texto de ayuda */
+.form-group.validation-group .help-text {
+    display: block;
+    /* Asegura que el texto ocupe su propia línea */
+    font-style: italic;
+    /* Texto en cursiva */
+    color: #000000;
+    /* Un color gris más suave */
+    font-size: 1.0em;
+    /* Más pequeño que el texto normal */
+    line-height: 1.4;
+    /* Mejora la legibilidad */
+    margin-top: 5px;
+    /* Pequeño espacio adicional arriba */
+    padding-left: 34px;
+    /* Alinea el texto de ayuda con el texto de la etiqueta */
+}
+
+/* ... el resto de tus estilos ... */
+
 
 /* Media query para pantallas pequeñas: las secciones se apilan */
 @media (max-width: 768px) {
