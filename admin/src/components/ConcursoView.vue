@@ -215,7 +215,7 @@
                                 </div>
                                 <div class="form-group validation-group">
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" id="validar" v-model="editableEmpresaData.Validar" />
+                                        <input type="checkbox" id="validar" v-model="editableEmpresaData.validar" />
                                         <label for="validar">¿Validado para Concurso?</label>
                                     </div>
                                     <span class="help-text">
@@ -349,7 +349,7 @@ const startEditing = () => {
             _id: copy._id, // Necesario para la URL del PUT
             empresaOrganizacion: copy.empresaOrganizacion,
             actividadesServicios: copy.actividadesServicios,
-            Validar: copy.Validar,
+            validar: copy.validar,
             link: copy.link, // URL del logo
             front: {
                 contexto: copy.front.contexto,
@@ -397,7 +397,7 @@ const saveChanges = async () => {
         const dataToSend = {
             empresaOrganizacion: editableEmpresaData.value.empresaOrganizacion,
             actividadesServicios: editableEmpresaData.value.actividadesServicios,
-            Validar: editableEmpresaData.value.Validar,
+            validar: editableEmpresaData.value.validar,
             link: editableEmpresaData.value.link,
             interesInformacion: true, // Asumimos true por defecto si no se edita
             front: {

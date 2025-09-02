@@ -73,8 +73,8 @@
                         <p>
                             <strong>Vínculo con PUCV:</strong>
                             {{
-                                empresa.vinculoPUCV && empresa.vinculoPUCV.length
-                                    ? empresa.vinculoPUCV.join(", ")
+                                empresa.vinculoPucv && empresa.vinculoPucv.length
+                                    ? empresa.vinculoPucv.join(", ")
                                     : "Sin datos"
                             }}
                         </p>
@@ -180,8 +180,8 @@
                     <!-- <p>
                         <strong>Validado:</strong>
                         {{
-                            typeof empresa.Validar === "boolean"
-                                ? empresa.Validar
+                            typeof empresa.validar === "boolean"
+                                ? empresa.validar
                                     ? "Sí"
                                     : "No"
                                 : "Sin datos"
@@ -379,7 +379,7 @@ const exportWord = (empresa) => {
 
     addList("Área(s) de Trabajo", empresa.areaTrabajo);
     // addLineBreak();
-    addList("Vínculo con PUCV", empresa.vinculoPUCV);
+    addList("Vínculo con PUCV", empresa.vinculoPucv);
     // addLineBreak();
     addParagraph("Actividades/Servicios", empresa.actividadesServicios);
 
@@ -412,7 +412,7 @@ const exportWord = (empresa) => {
     );
     addParagraph( // Descomentamos la línea de "Validado"
         "Validado",
-        empresa.Validar === true ? "Sí" : empresa.Validar === false ? "No" : "Sin datos"
+        empresa.validar === true ? "Sí" : empresa.validar === false ? "No" : "Sin datos"
     );
     addParagraph(
         "Fecha de Registro",

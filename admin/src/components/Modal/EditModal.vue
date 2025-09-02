@@ -24,8 +24,8 @@
                             <input v-model="localEmpresa.link" type="text" />
                         </label>
                         <label>
-                            Validar Empresa (para aparecer en lista):
-                            <input v-model="localEmpresa.Validar" type="checkbox" />
+                            validar Empresa (para aparecer en lista):
+                            <input v-model="localEmpresa.validar" type="checkbox" />
                         </label>
                     </div>
 
@@ -119,9 +119,9 @@ const extraDatosString = ref('');
 // PLANTILLA BASE CON VALORES POR DEFECTO COMPLETOS
 const baseTemplate = {
     nombre: "", apellido: "", correoElectronico: "", numeroTelefono: "",
-    empresaOrganizacion: "", areaTrabajo: [], contactoWeb: "", vinculoPUCV: [],
+    empresaOrganizacion: "", areaTrabajo: [], contactoWeb: "", vinculoPucv: [],
     actividadesServicios: "", desafio1: "", desafio2: "", desafio3: "",
-    interesInformacion: false, Validar: false, link: "",
+    interesInformacion: false, validar: false, link: "",
     front: {
         contexto: "",
         extra: { titulo: "", datos: [] },
@@ -162,7 +162,7 @@ const getDifferences = (original, edited) => {
             // Estos se excluyen si no son parte de los campos de 'front' o de la raíz editable
             if (['_id', 'createdAt', 'updatedAt', '__v',
                 'nombre', 'apellido', 'correoElectronico', 'numeroTelefono', 'contactoWeb',
-                'areaTrabajo', 'vinculoPUCV', 'desafio1', 'desafio2', 'desafio3', 'interesInformacion'
+                'areaTrabajo', ' vinculoPucv', 'desafio1', 'desafio2', 'desafio3', 'interesInformacion'
             ].includes(key)) {
                 // Solo para el nivel más alto, si son campos que no se muestran en el modal.
                 // En objetos anidados, debemos ser menos agresivos.
@@ -205,7 +205,7 @@ const validateFinalData = (data) => {
     if (typeof data.empresaOrganizacion !== 'string') errors.push('empresaOrganizacion debe ser un string.');
     if (typeof data.actividadesServicios !== 'string') errors.push('actividadesServicios debe ser un string.');
     if (typeof data.link !== 'string') errors.push('link debe ser un string.');
-    if (typeof data.Validar !== 'boolean') errors.push('Validar debe ser un booleano.');
+    if (typeof data.validar !== 'boolean') errors.push('validar debe ser un booleano.');
 
     // Validaciones de 'front'
     if (data.front) {
