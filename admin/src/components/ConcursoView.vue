@@ -17,7 +17,7 @@
                         'empresa-list-button',
                         { 'active': selectedEmpresa && selectedEmpresa._id === empresa._id },
                     ]" @click="selectEmpresa(empresa)">
-                        {{ empresa.empresaOrganizacion }}
+                        {{ empresa.nombreEmpresa }}
                     </button>
                 </div>
             </div>
@@ -50,9 +50,9 @@
                         <!-- EL cmf-challenge-header AHORA CONTIENE EL H1 Y EL LOGO -->
                         <div class="cmf-challenge-header" v-if="selectedEmpresa">
                             <div class="cmf-header-content">
-                                <h1>DESAFÍO {{ selectedEmpresa.empresaOrganizacion }}</h1>
+                                <h1>DESAFÍO {{ selectedEmpresa.nombreEmpresa }}</h1>
                                 <img v-if="selectedEmpresa.link" :src="selectedEmpresa.link"
-                                    :alt="selectedEmpresa.empresaOrganizacion + ' logo'" class="cmf-company-logo" />
+                                    :alt="selectedEmpresa.nombreEmpresa + ' logo'" class="cmf-company-logo" />
                             </div>
                         </div>
 
@@ -82,7 +82,7 @@
                         <!-- FIN CONTENEDOR FLEX -->
 
                         <div class="cmf-challenges-section">
-                            <h2 class="section-title-blue">Desafíos para {{ selectedEmpresa.empresaOrganizacion }}
+                            <h2 class="section-title-blue">Desafíos para {{ selectedEmpresa.nombreEmpresa }}
                             </h2>
                             <p class="cmf-main-challenge-description" v-if="selectedEmpresa.front.desafio_Texto">
                                 {{ selectedEmpresa.front.desafio_Texto }}
@@ -130,9 +130,9 @@
                         <form @submit.prevent="saveChanges" class="edit-form">
                             <h4 class="form-section-title">Información General</h4>
                             <div class="form-group">
-                                <label for="empresaOrganizacion">Nombre de la Empresa:</label>
-                                <input type="text" id="empresaOrganizacion"
-                                    v-model="editableEmpresaData.empresaOrganizacion" required />
+                                <label for="nombreEmpresa">Nombre de la Empresa:</label>
+                                <input type="text" id="nombreEmpresa" v-model="editableEmpresaData.nombreEmpresa"
+                                    required />
                             </div>
                             <div class="form-group">
                                 <label for="actividadesServicios">Actividades/Servicios:</label>
@@ -215,8 +215,8 @@
                                 </div>
                                 <div class="form-group validation-group">
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" id="validar" v-model="editableEmpresaData.validar" />
-                                        <label for="validar">¿Validado para Concurso?</label>
+                                        <input type="checkbox" id="validado" v-model="editableEmpresaData.validado" />
+                                        <label for="validado">¿Validado para Concurso?</label>
                                     </div>
                                     <span class="help-text">
                                         Al marcar esta casilla, confirmas que la empresa cumple con todos los requisitos
@@ -347,9 +347,9 @@ const startEditing = () => {
 
         editableEmpresaData.value = {
             _id: copy._id, // Necesario para la URL del PUT
-            empresaOrganizacion: copy.empresaOrganizacion,
+            nombreEmpresa: copy.nombreEmpresa,
             actividadesServicios: copy.actividadesServicios,
-            validar: copy.validar,
+            validado: copy.validado,
             link: copy.link, // URL del logo
             front: {
                 contexto: copy.front.contexto,
@@ -395,11 +395,11 @@ const saveChanges = async () => {
         const url = `${API_URL_UPDATE_BASE}/${editableEmpresaData.value._id}`;
 
         const dataToSend = {
-            empresaOrganizacion: editableEmpresaData.value.empresaOrganizacion,
+            nombreEmpresa: editableEmpresaData.value.nombreEmpresa,
             actividadesServicios: editableEmpresaData.value.actividadesServicios,
-            validar: editableEmpresaData.value.validar,
+            validado: editableEmpresaData.value.validado,
             link: editableEmpresaData.value.link,
-            interesInformacion: true, // Asumimos true por defecto si no se edita
+            masInformacion: true, // Asumimos true por defecto si no se edita
             front: {
                 contexto: editableEmpresaData.value.front.contexto,
                 extra: {
@@ -509,7 +509,7 @@ const deleteEmpresa = async () => {
     }
 
     const confirmDelete = confirm(
-        `¿Estás seguro de que quieres eliminar la empresa "${selectedEmpresa.value.empresaOrganizacion}"? Esta acción es irreversible.`,
+        `¿Estás seguro de que quieres eliminar la empresa "${selectedEmpresa.value.nombreEmpresa}"? Esta acción es irreversible.`,
     );
 
     if (!confirmDelete) {
@@ -541,7 +541,7 @@ const deleteEmpresa = async () => {
             throw new Error(errorMessage);
         }
 
-        alert(`Empresa "${selectedEmpresa.value.empresaOrganizacion}" eliminada con éxito.`);
+        alert(`Empresa "${selectedEmpresa.value.nombreEmpresa}" eliminada con éxito.`);
 
         // Después de eliminar, recargar la lista y deseleccionar la empresa
         selectedEmpresa.value = null; // Deseleccionar

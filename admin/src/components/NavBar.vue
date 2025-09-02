@@ -11,7 +11,7 @@
             <div v-if="!isMobile" class="navbar-right-desktop">
                 <router-link to="/empresas" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'building']" />
-                    Información Empresas
+                    Empresas y Desafíos
                 </router-link>
                 <!-- <router-link to="/academicos" class="nav-button">
                     <font-awesome-icon :icon="['fas', 'book-open']" />

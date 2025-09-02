@@ -8,16 +8,16 @@
                         {{
                             empresa.nombre || empresa.apellido
                                 ? `${empresa.nombre} ${empresa.apellido}`.trim()
-                                : empresa.empresaOrganizacion || "Empresa Desconocida"
+                                : empresa.nombreEmpresa || "Empresa Desconocida"
                         }}
                         <span v-if="empresa.nombre || empresa.apellido">
-                            - {{ empresa.empresaOrganizacion || "Organización Desconocida" }}
+                            - {{ empresa.nombreEmpresa || "Organización Desconocida" }}
                         </span>
 
                         <!-- IMAGEN DEL LINK -->
                         <a v-if="empresa.front?.link && isImageLink(empresa.front.link)" :href="empresa.front.link"
                             target="_blank" rel="noopener noreferrer" class="header-image-link-container" @click.stop>
-                            <img :src="empresa.front.link" :alt="empresa.empresaOrganizacion + ' logo/imagen'"
+                            <img :src="empresa.front.link" :alt="empresa.nombreEmpresa + ' logo/imagen'"
                                 class="header-image-link" />
                         </a>
                         <a v-else-if="empresa.front?.link" :href="empresa.front.link" target="_blank"
@@ -37,7 +37,7 @@
                     </p>
                     <p>
                         <strong>Empresa/Organización:</strong>
-                        {{ empresa.empresaOrganizacion || "Sin datos" }}
+                        {{ empresa.nombreEmpresa || "Sin datos" }}
                     </p>
                     <p>
                         <strong>Área(s) de Trabajo:</strong>
@@ -170,8 +170,8 @@
                     <p>
                         <strong>Interesado en más información:</strong>
                         {{
-                            typeof empresa.interesInformacion === "boolean"
-                                ? empresa.interesInformacion
+                            typeof empresa.masInformacion === "boolean"
+                                ? empresa.masInformacion
                                     ? "Sí"
                                     : "No"
                                 : "Sin datos"
@@ -180,8 +180,8 @@
                     <!-- <p>
                         <strong>Validado:</strong>
                         {{
-                            typeof empresa.validar === "boolean"
-                                ? empresa.validar
+                            typeof empresa.validado === "boolean"
+                                ? empresa.validado
                                     ? "Sí"
                                     : "No"
                                 : "Sin datos"
@@ -370,7 +370,7 @@ const exportWord = (empresa) => {
     // =========================
     addTitle("Información General");
     addParagraph("Nombre", `${empresa.nombre || ""} ${empresa.apellido || ""}`.trim());
-    addParagraph("Empresa/Organización", empresa.empresaOrganizacion);
+    addParagraph("Empresa/Organización", empresa.nombreEmpresa);
     addParagraph("Correo", empresa.correoElectronico);
     addParagraph("Teléfono", empresa.numeroTelefono);
     addParagraph("Contacto Web", empresa.contactoWeb);
@@ -404,15 +404,15 @@ const exportWord = (empresa) => {
     addTitle("Otros Datos");
     addParagraph(
         "Interesado en más información",
-        empresa.interesInformacion === true
+        empresa.masInformacion === true
             ? "Sí"
-            : empresa.interesInformacion === false
+            : empresa.masInformacion === false
                 ? "No"
                 : "Sin datos"
     );
     addParagraph( // Descomentamos la línea de "Validado"
         "Validado",
-        empresa.validar === true ? "Sí" : empresa.validar === false ? "No" : "Sin datos"
+        empresa.validado === true ? "Sí" : empresa.validado === false ? "No" : "Sin datos"
     );
     addParagraph(
         "Fecha de Registro",
@@ -431,7 +431,7 @@ const exportWord = (empresa) => {
     });
 
     Packer.toBlob(doc).then((blob) => {
-        const companyName = empresa.empresaOrganizacion || empresa.nombre || "empresa";
+        const companyName = empresa.nombreEmpresa || empresa.nombre || "empresa";
         const fileName = `Desafio ${companyName} info.docx`;
         saveAs(blob, fileName);
     });

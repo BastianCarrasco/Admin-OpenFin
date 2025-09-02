@@ -26,13 +26,14 @@ library.add(faGraduationCap, faBuilding, faBookOpen, faChevronDown, faTrophy);
 import EmpresasView from "./components/EmpresasView.vue";
 import AcademicosView from "./components/AcademicosView.vue";
 import ConcursoView from "./components/ConcursoView.vue";
+import construction from "./components/construction.vue";
 
 import "./assets/main.css"; // O tu archivo CSS principal
 
 const routes = [
   { path: "/empresas", component: EmpresasView },
   { path: "/academicos", component: AcademicosView },
-  { path: "/concurso", component: ConcursoView },
+  { path: "/concurso", component: construction },
   { path: "/", redirect: "/empresas" }, // Redirige a empresas por defecto
 ];
 
